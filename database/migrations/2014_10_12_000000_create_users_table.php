@@ -28,6 +28,8 @@ class CreateUsersTable extends Migration
             $table->string('companysize');
             $table->string('compagnyadress');
             $table->string('compagnylogo');
+            $table->string('googleid')->nullable()->unique();
+            $table->string('facebookif')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
 
             $table->rememberToken();

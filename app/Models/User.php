@@ -30,7 +30,9 @@ class User extends Authenticatable
         'companyname',
         'companysize',
         'compagnyadress',
-        'compagnylogo'
+        'compagnylogo',
+        'googleid',
+        'facebookid'
     ];
 
     /**

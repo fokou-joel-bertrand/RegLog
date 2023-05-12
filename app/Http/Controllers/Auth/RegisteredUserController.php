@@ -53,6 +53,8 @@ class RegisteredUserController extends Controller
             'compagnyadress' => $request->compagnyadress,
             'compagnylogo' => $request->compagnylogo,
             'companysize' => $request->companysize,
+            'googleid' => $request->googleid,
+            'facebookid' => $request->facebookid,
             'password' => Hash::make($request->password),
         ]);
 

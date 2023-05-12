@@ -5,13 +5,27 @@ import Input from '@/Components/Input';
 import Label from '@/Components/Label';
 import ValidationErrors from '@/Components/ValidationErrors';
 import { Head, Link, useForm } from '@inertiajs/inertia-react';
+import { GoogleLogin } from '@react-oauth/google';
+import FacebookLogin from 'react-facebook-login';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
-        name: '',
+  
+        firstname: '',
+        lastname: '',
         email: '',
         password: '',
-        password_confirmation: '',
+        country: '',
+        phonenumber: '',
+        countrycode: '',
+        city: '',
+        useraddress: '',
+        companyname: '',
+        companysize: '',
+        compagnyadress: '',
+        compagnylogo: '',
+        googleid: '',
+        facebookid: '',
     });
 
     useEffect(() => {
@@ -29,6 +43,24 @@ export default function Register() {
 
         post(route('register'));
     };
+
+    const responseMessage = (response) => {
+        console.log(response);
+    };
+    const errorMessage = (error) => {
+        console.log(error);
+    };
+
+    const responseFacebook = (response) => {
+        console.log(response);
+        setData(response);
+        setPicture(response.picture.data.url);
+        if (response.accessToken) {
+          setLogin(true);
+        } else {
+          setLogin(false);
+        }
+      }
 
     return (
         <Guest>
@@ -66,12 +98,32 @@ export default function Register() {
                     />
                 </div>
 
-                <Button className="ml-4" processing={processing}>
-                        Login With Google
-                    </Button>
+                <div className="mt-4">
+                    <Label forInput="password_confirmation" value="Confirm Password" />
+
+                    <Input
+                        type="password"
+                        name="password_confirmation"
+                        value={data.password_confirmation}
+                        className="mt-1 block w-full"
+                        handleChange={onHandleChange}
+                        required
+                    />
+                </div>
 
                 <Button className="ml-4" processing={processing}>
-                        Login With Facebook
+                    <GoogleLogin name="googleid" onSuccess={responseMessage} onError={errorMessage} />
+                </Button>  
+
+                <Button className="ml-4" processing={processing}>
+                <FacebookLogin
+                        appId="562118384400275"
+                        name="facebookid"
+                        autoLoad={true}
+                        fields="name,email,picture"
+                        scope="public_profile,user_friends"
+                        callback={responseFacebook}
+                        icon="fa-facebook" />
                 </Button>  
 
 
@@ -220,18 +272,16 @@ export default function Register() {
                     />
                 </div>
 
-                <div className="mt-4">
-                    <Label forInput="password_confirmation" value="Confirm Password" />
-
-                    <Input
-                        type="password"
-                        name="password_confirmation"
-                        value={data.password_confirmation}
-                        className="mt-1 block w-full"
-                        handleChange={onHandleChange}
-                        required
+                <FileInput
+                    className="w-full pb-8 pr-6 lg:w-1/2"
+                    label="Company Logo"
+                    name="companylogo"
+                    accept="image/*"
+                    errors={errors.companylogo}
+                    value={data.companylogo}
+                    onChange={companylogo => setData('companylogo', companylogo)}
                     />
-                </div>
+
 
                 <div className="flex items-center justify-end mt-4">
                     <Link href={route('login')} className="underline text-sm text-gray-600 hover:text-gray-900">
